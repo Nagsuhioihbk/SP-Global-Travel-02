@@ -40,98 +40,292 @@
 // }
 
 
+// import express from "express";
+// import cors from "cors";
+// import nodemailer from "nodemailer";
+// import bodyParser from "body-parser";
+
+// const app = express();
+
+// // Middlewares
+// app.use(cors());
+// app.use(express.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+// // Gmail Credentials (Directly Added as Requested)
+// const GMAIL_USER = "spglobaltravels@gmail.com";
+// const GMAIL_PASS = "psme nfdj fdbb kynx";  // Your Gmail App Password
+
+// // Common transporter
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: GMAIL_USER,
+//     pass: GMAIL_PASS,
+//   },
+// });
+
+// // ===============================
+// // BOOKING FORM
+// // ===============================
+// // ===============================
+// // CONTACT/BOOKING PAGE FORM
+// // ===============================
+// app.post("/send-booking-request", async (req, res) => {
+//   const { 
+//     name, 
+//     phone, 
+//     email, 
+//     date, 
+//     time, 
+//     pickup, 
+//     drop, 
+//     vehicle, 
+//     passengers, 
+//     notes 
+//   } = req.body;
+
+//   try {
+//     const mailOptions = {
+//       from: GMAIL_USER,
+//       to: GMAIL_USER,
+//       replyTo: email || GMAIL_USER,
+//       subject: `New Booking Request from ${name}`,
+//       html: `
+//         <h2>New Booking Request</h2>
+//         <p><strong>Name:</strong> ${name}</p>
+//         <p><strong>Phone:</strong> ${phone}</p>
+//         <p><strong>Email:</strong> ${email || 'Not provided'}</p>
+//         <p><strong>Travel Date:</strong> ${date}</p>
+//         <p><strong>Preferred Time:</strong> ${time || 'Not specified'}</p>
+//         <p><strong>Pickup Location:</strong> ${pickup}</p>
+//         <p><strong>Drop Location:</strong> ${drop}</p>
+//         <p><strong>Vehicle Type:</strong> ${vehicle}</p>
+//         <p><strong>Number of Passengers:</strong> ${passengers}</p>
+//         <p><strong>Additional Notes:</strong></p>
+//         <p>${notes || 'None'}</p>
+//       `,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+//     res.json({ 
+//       success: true, 
+//       message: "Booking request sent successfully!",
+//       bookingId: `BK-${Math.random().toString(36).slice(2, 9).toUpperCase()}`
+//     });
+//   } catch (error) {
+//     console.error("Booking Request Error:", error);
+//     res.status(500).json({ 
+//       success: false, 
+//       message: "Error sending booking request" 
+//     });
+//   }
+// });
+
+// // ===============================
+// // CAREER FORM
+// // ===============================
+// app.post("/send-career", async (req, res) => {
+//   const { name, email, phone, position, experience, message } = req.body;
+
+//   try {
+//     const mailOptions = {
+//       from: email,
+//       to: GMAIL_USER,
+//       subject: `Career Form Submission from ${name}`,
+//       text: `
+// Name: ${name}
+// Email: ${email}
+// Phone: ${phone}
+// Position: ${position}
+// Experience: ${experience}
+// Message: ${message}
+//       `,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+//     res.json({ success: true, message: "Career email sent!" });
+//   } catch (error) {
+//     console.error("Career Error:", error);
+//     res.status(500).json({ success: false, message: "Error sending mail" });
+//   }
+// });
+
+// // ===============================
+// // CONTACT FORM
+// // ===============================
+// app.post("/send-contact", async (req, res) => {
+//   const { name, email, phone, message } = req.body;
+
+//   try {
+//     const mailOptions = {
+//       from: email,
+//       to: GMAIL_USER,
+//       subject: `New Contact Form Message`,
+//       text: `
+// Name: ${name}
+// Email: ${email}
+// Phone: ${phone}
+// Message: ${message}
+//       `,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+//     res.json({ success: true, message: "Contact email sent!" });
+//   } catch (error) {
+//     console.error("Contact Error:", error);
+//     res.status(500).json({ success: false, message: "Error sending mail" });
+//   }
+// });
+
+// // ===============================
+// // FEEDBACK FORM
+// // ===============================
+// app.post("/send-feedback", async (req, res) => {
+//   const { name, email, feedback } = req.body;
+
+//   try {
+//     const mailOptions = {
+//       from: email,
+//       to: GMAIL_USER,
+//       subject: `New Feedback From ${name}`,
+//       text: `
+// Name: ${name}
+// Email: ${email}
+// Feedback: ${feedback}
+//       `,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+//     res.json({ success: true, message: "Feedback sent successfully!" });
+//   } catch (error) {
+//     console.error("Feedback Error:", error);
+//     res.status(500).json({ success: false, message: "Error sending mail" });
+//   }
+// });
+
+// // ===============================
+// // QUICK QUOTE FORM (Homepage)
+// // ===============================
+// app.post("/send-quick-quote", async (req, res) => {
+//   const { pickup, drop, date, passengers } = req.body;
+
+//   try {
+//     const mailOptions = {
+//       from: GMAIL_USER,
+//       to: GMAIL_USER,
+//       subject: `New Quick Quote Request`,
+//       html: `
+//         <h2>Quick Quote Request</h2>
+//         <p><strong>Pickup City:</strong> ${pickup}</p>
+//         <p><strong>Drop City:</strong> ${drop}</p>
+//         <p><strong>Travel Date:</strong> ${date}</p>
+//         <p><strong>Number of Passengers:</strong> ${passengers}</p>
+//         <hr>
+//         <p><em>Note: This is a quick quote request. Please contact the customer with pricing details.</em></p>
+//       `,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+//     res.json({ 
+//       success: true, 
+//       message: "Quote request received! We'll contact you soon with pricing."
+//     });
+//   } catch (error) {
+//     console.error("Quick Quote Error:", error);
+//     res.status(500).json({ 
+//       success: false, 
+//       message: "Error sending quote request" 
+//     });
+//   }
+// });
+
+// // ===============================
+// // START SERVER
+// // ===============================
+// const PORT = 5000;
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
 import express from "express";
 import cors from "cors";
 import nodemailer from "nodemailer";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
+
+// Load environment variables from .env
+dotenv.config();
 
 const app = express();
 
-// Middlewares
+// ===============================
+// MIDDLEWARES
+// ===============================
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Gmail Credentials (Directly Added as Requested)
-const GMAIL_USER = "spglobaltravels@gmail.com";
-const GMAIL_PASS = "psme nfdj fdbb kynx";  // Your Gmail App Password
-
-// Common transporter
+// ===============================
+// EMAIL SETUP
+// ===============================
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: GMAIL_USER,
-    pass: GMAIL_PASS,
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS,
   },
 });
 
 // ===============================
-// BOOKING FORM
+// ROUTES
 // ===============================
-// ===============================
-// CONTACT/BOOKING PAGE FORM
-// ===============================
+
+// --------- BOOKING FORM ---------
 app.post("/send-booking-request", async (req, res) => {
-  const { 
-    name, 
-    phone, 
-    email, 
-    date, 
-    time, 
-    pickup, 
-    drop, 
-    vehicle, 
-    passengers, 
-    notes 
-  } = req.body;
+  const { name, phone, email, date, time, pickup, drop, vehicle, passengers, notes } = req.body;
 
   try {
     const mailOptions = {
-      from: GMAIL_USER,
-      to: GMAIL_USER,
-      replyTo: email || GMAIL_USER,
+      from: process.env.GMAIL_USER,
+      to: process.env.GMAIL_USER,
+      replyTo: email || process.env.GMAIL_USER,
       subject: `New Booking Request from ${name}`,
       html: `
         <h2>New Booking Request</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Email:</strong> ${email || 'Not provided'}</p>
+        <p><strong>Email:</strong> ${email || "Not provided"}</p>
         <p><strong>Travel Date:</strong> ${date}</p>
-        <p><strong>Preferred Time:</strong> ${time || 'Not specified'}</p>
+        <p><strong>Preferred Time:</strong> ${time || "Not specified"}</p>
         <p><strong>Pickup Location:</strong> ${pickup}</p>
         <p><strong>Drop Location:</strong> ${drop}</p>
         <p><strong>Vehicle Type:</strong> ${vehicle}</p>
         <p><strong>Number of Passengers:</strong> ${passengers}</p>
-        <p><strong>Additional Notes:</strong></p>
-        <p>${notes || 'None'}</p>
+        <p><strong>Additional Notes:</strong> ${notes || "None"}</p>
       `,
     };
 
     await transporter.sendMail(mailOptions);
-    res.json({ 
-      success: true, 
+
+    res.json({
+      success: true,
       message: "Booking request sent successfully!",
-      bookingId: `BK-${Math.random().toString(36).slice(2, 9).toUpperCase()}`
+      bookingId: `BK-${Math.random().toString(36).slice(2, 9).toUpperCase()}`,
     });
   } catch (error) {
     console.error("Booking Request Error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error sending booking request" 
-    });
+    res.status(500).json({ success: false, message: "Error sending booking request" });
   }
 });
 
-// ===============================
-// CAREER FORM
-// ===============================
+// --------- CAREER FORM ---------
 app.post("/send-career", async (req, res) => {
   const { name, email, phone, position, experience, message } = req.body;
 
   try {
     const mailOptions = {
       from: email,
-      to: GMAIL_USER,
+      to: process.env.GMAIL_USER,
       subject: `Career Form Submission from ${name}`,
       text: `
 Name: ${name}
@@ -147,21 +341,19 @@ Message: ${message}
     res.json({ success: true, message: "Career email sent!" });
   } catch (error) {
     console.error("Career Error:", error);
-    res.status(500).json({ success: false, message: "Error sending mail" });
+    res.status(500).json({ success: false, message: "Error sending career email" });
   }
 });
 
-// ===============================
-// CONTACT FORM
-// ===============================
+// --------- CONTACT FORM ---------
 app.post("/send-contact", async (req, res) => {
   const { name, email, phone, message } = req.body;
 
   try {
     const mailOptions = {
       from: email,
-      to: GMAIL_USER,
-      subject: `New Contact Form Message`,
+      to: process.env.GMAIL_USER,
+      subject: "New Contact Form Message",
       text: `
 Name: ${name}
 Email: ${email}
@@ -174,21 +366,19 @@ Message: ${message}
     res.json({ success: true, message: "Contact email sent!" });
   } catch (error) {
     console.error("Contact Error:", error);
-    res.status(500).json({ success: false, message: "Error sending mail" });
+    res.status(500).json({ success: false, message: "Error sending contact email" });
   }
 });
 
-// ===============================
-// FEEDBACK FORM
-// ===============================
+// --------- FEEDBACK FORM ---------
 app.post("/send-feedback", async (req, res) => {
   const { name, email, feedback } = req.body;
 
   try {
     const mailOptions = {
       from: email,
-      to: GMAIL_USER,
-      subject: `New Feedback From ${name}`,
+      to: process.env.GMAIL_USER,
+      subject: `New Feedback from ${name}`,
       text: `
 Name: ${name}
 Email: ${email}
@@ -200,21 +390,19 @@ Feedback: ${feedback}
     res.json({ success: true, message: "Feedback sent successfully!" });
   } catch (error) {
     console.error("Feedback Error:", error);
-    res.status(500).json({ success: false, message: "Error sending mail" });
+    res.status(500).json({ success: false, message: "Error sending feedback" });
   }
 });
 
-// ===============================
-// QUICK QUOTE FORM (Homepage)
-// ===============================
+// --------- QUICK QUOTE FORM ---------
 app.post("/send-quick-quote", async (req, res) => {
   const { pickup, drop, date, passengers } = req.body;
 
   try {
     const mailOptions = {
-      from: GMAIL_USER,
-      to: GMAIL_USER,
-      subject: `New Quick Quote Request`,
+      from: process.env.GMAIL_USER,
+      to: process.env.GMAIL_USER,
+      subject: "New Quick Quote Request",
       html: `
         <h2>Quick Quote Request</h2>
         <p><strong>Pickup City:</strong> ${pickup}</p>
@@ -227,21 +415,15 @@ app.post("/send-quick-quote", async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-    res.json({ 
-      success: true, 
-      message: "Quote request received! We'll contact you soon with pricing."
-    });
+    res.json({ success: true, message: "Quote request received! We'll contact you soon." });
   } catch (error) {
     console.error("Quick Quote Error:", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error sending quote request" 
-    });
+    res.status(500).json({ success: false, message: "Error sending quick quote request" });
   }
 });
 
 // ===============================
 // START SERVER
 // ===============================
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
